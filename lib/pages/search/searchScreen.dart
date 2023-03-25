@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/cubit/weather_cubit.dart';
 import 'package:weather_app/providers/weatherProvider.dart';
 import 'package:weather_app/services/weather_service.dart';
 
@@ -21,16 +22,10 @@ class SearchScreen extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
             controller: searchCityController,
-            
             onFieldSubmitted: (value) async {
               cityName = value;
-              WeatherService service = WeatherService();
-              WeatherModel? weatherModel =
-                  await service.getWeather(cityName: cityName!);
-              Provider.of<WeatherProvider>(context, listen: false).weatherData =
-                  weatherModel;
-              Provider.of<WeatherProvider>(context, listen: false).cityName =
-                  cityName;
+              WeatherCubit.get(context)
+                  .getWeatherDataFromApi(cityName: cityName!);
               Navigator.pop(context);
             },
             onChanged: (value) {
@@ -40,15 +35,13 @@ class SearchScreen extends StatelessWidget {
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 suffixIcon: IconButton(
-                  onPressed: () async{
-                     WeatherService service = WeatherService();
-              WeatherModel? weatherModel =
-                  await service.getWeather(cityName: cityName!);
-              Provider.of<WeatherProvider>(context, listen: false).weatherData =
-                  weatherModel;
-              Provider.of<WeatherProvider>(context, listen: false).cityName =
-                  cityName;
-              Navigator.pop(context);
+                  onPressed: () async {
+                    WeatherService service = WeatherService();
+                    WeatherModel? weatherModel =
+                        await service.getWeather(cityName: cityName!);
+                    WeatherCubit.get(context).weatherModelData = weatherModel;
+                    WeatherCubit.get(context).cityNameCubit = cityName;
+                    Navigator.pop(context);
                   },
                   icon: Icon(Icons.search),
                 ),

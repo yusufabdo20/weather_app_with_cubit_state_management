@@ -8,7 +8,7 @@ class WeatherService {
     WeatherModelError? weatherError;
     try {
       String baseUrl = 'http://api.weatherapi.com/v1';
-      String apiKey = '247001a1be594f9db3e135537231603';
+      String apiKey = 'f7f18ca99fc04417b3f124133231701';
       Uri apiUrl =
           Uri.parse("$baseUrl/forecast.json?key=$apiKey&q=$cityName&days=7");
       http.Response response = await http.get(apiUrl);
