@@ -15,12 +15,13 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search a City"),
+        title: const Text("Search a City"),
       ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: TextFormField(
+            onSaved: (value) => value?.trim(),
             controller: searchCityController,
             onFieldSubmitted: (value) async {
               cityName = value;
@@ -33,7 +34,7 @@ class SearchScreen extends StatelessWidget {
             },
             decoration: InputDecoration(
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 suffixIcon: IconButton(
                   onPressed: () async {
                     WeatherService service = WeatherService();
@@ -43,11 +44,11 @@ class SearchScreen extends StatelessWidget {
                     WeatherCubit.get(context).cityNameCubit = cityName;
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                 ),
                 labelText: "Search",
                 hintText: "Enter City Name",
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black))),
           ),
         ),

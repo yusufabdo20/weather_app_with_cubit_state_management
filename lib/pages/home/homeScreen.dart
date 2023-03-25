@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
             body: BlocBuilder<WeatherCubit, WeatherState>(
               builder: (context, state) {
                 if (state is GetWeatherDataLoadState) {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 } else if (state is GetWeatherDataSuccessState) {
                   weatherModelData = WeatherCubit.get(context).weatherModelData;
                   return SuccessState(weatherModelData: weatherModelData);
@@ -78,11 +78,24 @@ class SuccessState extends StatelessWidget {
     return Container(
       //  color: weatherData == null ? Colors.black12 : weatherData!.getThemeColor(),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-          weatherModelData!.getThemeColor(),
-          weatherModelData!.getThemeColor()[300]!,
-          weatherModelData!.getThemeColor()[100]!,
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+        gradient: weatherModelData != null
+            ? LinearGradient(
+                colors: [
+                  weatherModelData!.getThemeColor(),
+                  weatherModelData!.getThemeColor()[300]!,
+                  weatherModelData!.getThemeColor()[100]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              )
+            : LinearGradient(
+                colors: [
+                  Colors.black87,
+                  Colors.black12,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -90,13 +103,15 @@ class SuccessState extends StatelessWidget {
           const Spacer(
             flex: 3,
           ),
-          Text("City:",
+          Text(weatherModelData != null?"City:":"",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
               )),
           Text(
-              "   ${weatherModelData!.date.day} / ${weatherModelData!.date.month} / ${weatherModelData!.date.year}\n updated at ${weatherModelData!.date.hour} : ${weatherModelData!.date.minute} ",
+              weatherModelData != null
+                  ? "${weatherModelData!.date.day} / ${weatherModelData!.date.month} / ${weatherModelData!.date.year}\n updated at ${weatherModelData!.date.hour} : ${weatherModelData!.date.minute} "
+                  : "",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -105,20 +120,34 @@ class SuccessState extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset(weatherModelData!.getImage()),
-              Text("${weatherModelData!.temp.toInt()}",
+              Image.asset(
+                  weatherModelData != null
+                      ? weatherModelData!.getImage()
+                      : "assets/images/noImage.png",
+                  width: 100,
+                  height: 100),
+              Text(
+                  weatherModelData != null
+                      ? "${weatherModelData!.temp.toInt()}"
+                      : "Try Again ",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                   )),
               Column(
                 children: [
-                  Text("max: ${weatherModelData!.maxTemp.toInt()}",
+                  Text(
+                      weatherModelData != null
+                          ? "max: ${weatherModelData!.maxTemp.toInt()}"
+                          : "",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       )),
-                  Text("min: ${weatherModelData!.minTemp.toInt()}",
+                  Text(
+                      weatherModelData != null
+                          ? "min: ${weatherModelData!.minTemp.toInt()}"
+                          : "",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
