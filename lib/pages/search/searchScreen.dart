@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:provider/provider.dart';
 import 'package:weather_app/cubit/weather_cubit.dart';
-import 'package:weather_app/providers/weatherProvider.dart';
 import 'package:weather_app/services/weather_service.dart';
 
 import '../../models/weather_model.dart';
